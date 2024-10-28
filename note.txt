@@ -1,0 +1,26 @@
+khi thêm sản phẩm thì các thuộc tính chưa được phân loại theo ngôn ngữ(sửa ở AttributeController)
+-bảng product_variant_language
+    +id
+    +id
+    +name VD: xanh, xxl
+-bảng product_variants
+    +id
+    +product_id
+    +code VD: 1, 2 (lần lượt là id của xanh và xxl)
+    +quantity
+    +sku
+    +price
+    +barcode
+    +filename
+    +file_url
+    +album
+    +status
+    +created_at
+    +updated_at
+    +deleted_at
+    +user_id
+
+-bảng product_variant_attribute
+    +product_variant_id
+    +attribute_id
+
