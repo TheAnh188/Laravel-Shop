@@ -652,6 +652,7 @@
     };
 
     App.updateVariant = () => {
+        //lấy giá trị từ các hiddenInput để truyền vào phía sau .update-variant-tr bằng hàm App.renderVariant
         $(document).on("click", ".variant-row", function () {
             let _this = $(this);
             let variantData = {};

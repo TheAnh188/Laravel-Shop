@@ -226,6 +226,13 @@ return [
             'title' => 'Xóa thuộc tính',
         ],
     ],
+    'system' => [
+        'index' => [
+            'title' => 'Câú hình hệ thống',
+            'table' => 'Cài đặt thông tin cấu hình hệ thống',
+            'name' => 'Tên thuộc tính',
+        ],
+    ],
     'notice' => [
         'store' => 'Nhập đầy đủ thông tin',
         'sub_store' => 'Lưu ý: Các trường đánh dấu (*) là bắt buộc',

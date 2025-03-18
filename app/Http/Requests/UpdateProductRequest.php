@@ -38,6 +38,7 @@ class UpdateProductRequest extends FormRequest
 
     public function messages(): array
     {
+
         return [
             'name.required' => 'Tên nhóm bài viết không được để trống.',
             'content.required' => 'Nội dung không được để trống.',

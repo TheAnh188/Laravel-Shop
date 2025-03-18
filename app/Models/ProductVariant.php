@@ -25,14 +25,20 @@ class ProductVariant extends Model
         'user_id',
     ];
 
-    public function product(){
+    public function product()
+    {
         return $this->belongsTo(Product::class, 'product_id', 'id');
     }
 
-    public function languages() {
+    public function languages()
+    {
         return $this->belongsToMany(Language::class, 'product_variant_language', 'product_variant_id', 'language_id')
-                ->withPivot('name')
-                ->withTimestamps();
+            ->withPivot('name')
+            ->withTimestamps();
     }
 
+    public function attributes()
+    {
+        return $this->belongsToMany(Attribute::class, 'product_variant_attribute', 'product_variant_id', 'attribute_id');
+    }
 }

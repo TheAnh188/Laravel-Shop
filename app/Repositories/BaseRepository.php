@@ -142,4 +142,13 @@ class BaseRepository implements BaseRepositoryInterface
         return $model->{$relation}()->attach($model->id, $payload);
     }
 
+    public function createBatch(array $payload = []) {
+        return $this->model->insert($payload);
+    }
+
+    public function updateOrInsert(array $payload = [], array $condition = []) {
+         $this->model->query()->delete(); // Xóa toàn bộ dữ liệu trong bảng
+        return $this->model->upsert($payload, $condition);
+    }
+
 }

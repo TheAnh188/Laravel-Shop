@@ -21,6 +21,7 @@ interface BaseRepositoryInterface
     public function updateByWhereIN(string $whereInField = '', array $whereIn = [], array $payload = []);
     public function createPivot($model, array $payload = [], string $relation = '');
     public function updateByWhere($condition = [], array $payload = []);
-
+    public function createBatch(array $payload = []);
+    public function updateOrInsert(array $payload = [], array $condition = []);
 
 }

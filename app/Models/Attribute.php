@@ -37,4 +37,9 @@ class Attribute extends Model
     public function attribute_language() {
         return $this->hasMany(AttributeLanguage::class, 'attribute_id', 'id');
     }
+
+    public function product_variants()
+    {
+        return $this->belongsToMany(ProductVariant::class, 'product_variant_attribute', 'attribute_id', 'product_variant_id');
+    }
 }

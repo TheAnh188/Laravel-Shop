@@ -98,30 +98,27 @@
                             <span class="text-red-500">(*)</span></label>
                     </div>
                     <div class="relative w-full mb-5 group">
-                        <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Mô
-                            tả</label>
+                        <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ __('messages.description') }}</label>
                         <textarea id="description" rows="4" name="description"
                             class="editor block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder="Mô tả">{{ old('description', $post->description ?? '') }}</textarea>
+                            placeholder="{{ __('messages.description') }}">{{ old('description', $post->description ?? '') }}</textarea>
                     </div>
                     <div class="relative w-full mb-5 group">
-                        <label for="content" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nội
-                            dung</label>
+                        <label for="content" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ __('messages.content') }}</label>
                         <textarea id="content" rows="4" name="content"
                             class="editor block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder="Mô tả nội dung">{{ old('content', $post->content ?? '') }}</textarea>
+                            placeholder="{{ __('messages.content') }}">{{ old('content', $post->content ?? '') }}</textarea>
                     </div>
                     <div class="relative z-0 w-full mb-5 group">
-                        <label for="seo" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Cấu hình
-                            SEO</label>
+                        <label for="seo" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ __('messages.seo') }}</label>
                         <div class="bg-white border-2 rounded-lg p-4">
                             <div class="w-full text-[#1a0dab] meta_title-preview">
-                                {{ old('meta_title', $post->meta_title ?? '') ?? 'Tiêu đề SEO' }}</div>
+                                {{ old('meta_title', $post->meta_title ?? '') ?? __('messages.meta_title-preview') }}</div>
                             <div class="w-full text-green-600 canonical-preview">
-                                {{ env('APP_URL') . '/' . old('canonical', $post->canonical ?? '') ?? 'https://duong-dan-cua-ban.html' }}
+                                {{ env('APP_URL') . '/' . old('canonical', $post->canonical ?? '') ?? __('messages.canonical-preview') }}
                             </div>
                             <div class="w-full text-gray-500 meta_description-preview">
-                                {{ old('meta_description', $post->meta_description ?? '') ?? 'Mô tả trang web ...' }}
+                                {{ old('meta_description', $post->meta_description ?? '') ?? __('messages.meta_description-preview') }}
                             </div>
                         </div>
                     </div>
@@ -130,9 +127,8 @@
                             class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                             placeholder="" value="{{ old('meta_title', $post->meta_title ?? '') }}" />
                         <label for="meta_title"
-                            class="w-full peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Tiêu
-                            đề SEO
-                            <span class="text-red-500">(*)</span><span class="count_meta-title ml-48">Số kí tự có thể điền :
+                            class="w-full peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">{{ __('messages.meta_title') }}
+                            <span class="text-red-500">(*)</span><span class="count_meta-title ml-48">{{ __('messages.character') }} :
                                 0</span>
                         </label>
                     </div>
@@ -141,16 +137,15 @@
                             class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                             placeholder="" value="{{ old('meta_keyword', $post->meta_keyword ?? '') }}" />
                         <label for="meta_keyword"
-                            class="w-full peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Từ
-                            khóa SEO
-                            <span class="text-red-500">(*)</span><span class="count_meta-title ml-48">Số kí tự có thể điền :
+                            class="w-full peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">{{ __('messages.meta_keyword') }}
+                            <span class="text-red-500">(*)</span><span class="count_meta-title ml-48">{{ __('messages.character') }} :
                                 0</span>
                         </label>
                     </div>
                     <div class="relative z-0 w-full mb-5 group">
                         <textarea id="meta_description" rows="4" name="meta_description"
                             class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder="Mô tả SEO">{{ old('meta_description', $post->meta_description ?? '') }}</textarea>
+                            placeholder="{{ __('messages.meta_description') }}">{{ old('meta_description', $post->meta_description ?? '') }}</textarea>
                     </div>
                     <div class="relative z-0 w-full mb-5 group">
                         <input type="text" name="canonical" id="canonical"
@@ -158,15 +153,13 @@
                             placeholder=""
                             value="{{ env('APP_URL') . '/' . old('canonical', $post->canonical ?? '') ?? env('APP_URL') . '/' }}" />
                         <label for="canonical"
-                            class="w-full peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Đường
-                            dẫn
+                            class="w-full peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">{{ __('messages.canonical') }}
                             <span class="text-red-500">(*)</span>
                         </label>
                     </div>
                     <div class="relative z-0 w-full mb-5 group">
                         <label class="image-file block mb-1 text-sm font-medium text-gray-900 dark:text-white"
-                            for="user_avatar">Ảnh đại
-                            diện</label>
+                            for="user_avatar">{{ __('messages.image') }}</label>
                         <img class="image-target cursor-pointer w-[157px] h-[148px] object-cover"
                             src="{{ $post->image ?? asset('images/no_image.jpg') }}" alt="">
                         <input name="image-file"
@@ -178,8 +171,7 @@
                     <div class="relative z-0 w-full mb-5 group">
                         <div class="flex justify-between">
                             <label for="album-file"
-                                class="inline-block mb-2 text-sm font-medium text-gray-900 dark:text-white">Album
-                                ảnh</label>
+                                class="inline-block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ __('messages.album') }}</label>
                             <div>
                                 <input type="file" multiple name="album-file" id="album-file"
                                     class="album-file hidden inline-block text-blue-700 mb-2 text-sm font-medium dark:text-white">
@@ -208,8 +200,7 @@
                         </div>
                     </div>
                     <button type="submit" id="clear-selected-image"
-                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Lưu
-                        Thông Tin</button>
+                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">{{ __('messages.create') }}</button>
                 </form>
             </div>
         </div>

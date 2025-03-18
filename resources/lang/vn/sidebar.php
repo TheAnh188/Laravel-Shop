@@ -37,21 +37,6 @@ return [
             ],
         ],
         [
-            'title' => 'Cấu hình chung',
-            'icon' => 'fas fa-sticky-note mr-3',
-            'name' => ['language', 'generator'],
-            'sub_module' => [
-                [
-                    'title' => 'Quản Lý Ngôn Ngữ',
-                    'route' => '/language',
-                ],
-                [
-                    'title' => 'Quản Lý Module',
-                    'route' => '/generator',
-                ],
-            ],
-        ],
-        [
             'title' => 'Quản Lý Sản Phẩm',
             'icon' => 'fas fa-cube mr-3',
             'name' => ['product', 'product-catalogue', 'attribute', 'attribute-catalogue'],
@@ -71,6 +56,26 @@ return [
                 [
                     'title' => 'Quản Thuộc Tính',
                     'route' => '/attribute',
+                ],
+            ],
+        ],
+        [
+            'title' => 'Cấu hình chung',
+            'icon' => 'fas fa-sticky-note mr-3',
+            // 'name' => ['language', 'generator'],
+            'name' => ['system'],
+            'sub_module' => [
+                // [
+                //     'title' => 'Quản Lý Ngôn Ngữ',
+                //     'route' => '/language',
+                // ],
+                // [
+                //     'title' => 'Quản Lý Module',
+                //     'route' => '/generator',
+                // ],
+                [
+                    'title' => 'Cấu hình hệ thống',
+                    'route' => '/system',
                 ],
             ],
         ],

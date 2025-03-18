@@ -88,6 +88,7 @@ class ProductController extends Controller
     public function edit(string $id)
     {
         $canonicalPermission = 'product/edit';
+        $attributeCatalogues = $this->attributeCatalogueRepository->all([], true, $this->language);
         $dropdown = $this->nestedset->Dropdown();
         $product = $this->productRepository->getProductById($id, $this->language);
         $album = json_decode($product->album);
@@ -96,6 +97,7 @@ class ProductController extends Controller
             'product' => $product,
             'album' => $album,
             'authorization' => $this->customAuthorize($canonicalPermission),
+            'attribute_catalogues' => $attributeCatalogues,
         ]);
     }
 

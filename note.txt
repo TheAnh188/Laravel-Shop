@@ -1,4 +1,5 @@
 khi thêm sản phẩm thì các thuộc tính chưa được phân loại theo ngôn ngữ(sửa ở AttributeController)
+khi xoa sản phẩm thì thiếu phần xóa đường dẫn của sản phẩm đó ở bảng routes
 -bảng product_variant_language
     +id
     +id

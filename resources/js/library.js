@@ -153,6 +153,31 @@
         }
     };
 
+    App.uploadImage2 = (object, type) => {
+        $(".image-targett").click(function () {
+            $(this).next("#image-filee").click(); // Chỉ chọn phần tử ngay sau nó
+        });
+
+        $(".image-targett").next("#image-filee").change(function () {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    $(this).prev(".image-targett").attr("src", e.target.result); // Cập nhật đúng ảnh tương ứng
+                    $(this).siblings("input[name*='config']").val(e.target.result);
+                }.bind(this); // Đảm bảo `this` vẫn là `#image-filee`
+                reader.readAsDataURL(file);
+            }
+        });
+
+        if (localStorage.getItem("selectedImage")) {
+            $(".image-targett").attr(
+                "src",
+                localStorage.getItem("selectedImage")
+            );
+        }
+    };
+
     App.uploadAlbum = () => {
         $(".album-target").click(function () {
             $("#album-file").click();
@@ -258,6 +283,6 @@
         App.deleteImage();
         App.checkPermission();
         App.format_number();
-
+        App.uploadImage2();
     });
 })($);

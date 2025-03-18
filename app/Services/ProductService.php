@@ -6,7 +6,8 @@ use App\Models\Product;
 use App\Services\Interfaces\ProductServiceInterface;
 use App\Repositories\Interfaces\ProductRepositoryInterface as ProductRepository;
 use App\Repositories\Interfaces\RouteRepositoryInterface as RouteRepository;
-// use App\Repositories\Interfaces\ProductRepositoryInterface as ProductRepository ;
+use App\Repositories\Interfaces\ProductVariantLanguageRepositoryInterface as ProductVariantLanguageRepository ;
+use App\Repositories\Interfaces\ProductVariantAttributeRepositoryInterface as ProductVariantAttributeRepository ;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreProductRequest;
@@ -24,12 +25,15 @@ class ProductService extends BaseService implements ProductServiceInterface
     protected $productRepository;
     protected $routeRepository;
     private $controller = 'ProductController';
-    // protected $productRepository;
+    protected $productVariantLanguageRepository;
+    protected $productVariantAttributeRepository;
 
-    public function __construct(ProductRepository $productRepository, RouteRepository $routeRepository)
+    public function __construct(ProductRepository $productRepository, RouteRepository $routeRepository, ProductVariantLanguageRepository $productVariantLanguageRepository, ProductVariantAttributeRepository $productVariantAttributeRepository)
     {
         $this->productRepository = $productRepository;
         $this->routeRepository = $routeRepository;
+        $this->productVariantLanguageRepository = $productVariantLanguageRepository;
+        $this->productVariantAttributeRepository = $productVariantAttributeRepository;
     }
 
     private function whereRaw($request, $language_id)
@@ -102,10 +106,19 @@ class ProductService extends BaseService implements ProductServiceInterface
 
     private function formatProductPayload($request)
     {
-        $productPayload = $request->only(['follow', 'status', 'image', 'album', 'product_catalogue_id', 'price']);
+        $productPayload = $request->only(['follow', 'status', 'image', 'album', 'product_catalogue_id', 'price', 'code', 'made_in', 'attributeCatalogue', 'attribute', 'variant']);
         $productPayload['album'] = isset($productPayload['album']) && !empty($productPayload['album']) ? json_encode($productPayload['album']) : NULL;
         $productPayload['user_id'] = Auth::id();
         $productPayload['price'] = str_replace('.', '', $productPayload['price']);
+        $productPayload['attributeCatalogue'] = isset($productPayload['attributeCatalogue']) && !empty($productPayload['attributeCatalogue']) ? json_encode($productPayload['attributeCatalogue']) : NULL;
+        $productPayload['attribute_catalogue'] = $productPayload['attributeCatalogue'];
+        $productPayload['attribute'] = isset($productPayload['attribute']) && !empty($productPayload['attribute']) ? json_encode($productPayload['attribute']) : NULL;
+        $productPayload['attributes'] = $productPayload['attribute'];
+        $productPayload['variant'] = isset($productPayload['variant']) && !empty($productPayload['variant']) ? json_encode($productPayload['variant']) : NULL;
+        $productPayload['variants'] = $productPayload['variant'];
+        unset($productPayload['attributeCatalogue']);
+        unset($productPayload['attribute']);
+        // dd( $productPayload);
         return $productPayload;
     }
 
@@ -124,12 +137,49 @@ class ProductService extends BaseService implements ProductServiceInterface
         return $productCatalogueProductPayload;
     }
 
-    private function createVariant($request, $product)
+    private function createVariant($request, $product, $language_id)
     {
-        $payload = $request->only(['variant', 'attribute_input']);
+        $payload = $request->only(['variant', 'attribute_input', 'attribute']);
         $variants = $this->formatVariantPayload($payload);
         $product->product_variants()->delete();//xóa tất cả nhưng biến thể của san phẩm trong csdl
-        $product->product_variants()->createMany($variants);//thêm nhiều biến thể của sản phẩm thông qua qh product_variants
+        $variants = $product->product_variants()->createMany($variants);//thêm nhiều biến thể của sản phẩm thông qua qh product_variants
+        $variantIds = $variants->pluck('id');
+        $productVariantLanguagePayload = [];
+        $productVariantAttributePayload = [];
+        $combinedAttributes = $this->combineAttribute(array_values($payload['attribute']));
+        if(count($variantIds)) {
+            foreach($variantIds as $key => $value){
+                $productVariantLanguagePayload[] = [
+                    'product_variant_id' => $value,
+                    'language_id' => $language_id,
+                    'name' => $payload['attribute_input']['name'][$key],
+                ];
+                foreach($combinedAttributes[$key] as $index) {
+                    $productVariantAttributePayload[] = [
+                        'product_variant_id' => $value,
+                        'attribute_id' => $index,
+                    ];
+                }
+            }
+
+        }
+        // dd($productVariantAttributePayload);
+        //tạo bản ghi vào bảng product_variant_language
+        $this->productVariantLanguageRepository->createBatch($productVariantLanguagePayload);
+        //tạo bản ghi vào bảng product_variant_attribute
+        $this->productVariantAttributeRepository->createBatch($productVariantAttributePayload);
+    }
+
+    private function combineAttribute($attributes = [], $index = 0) {
+        if($index === count($attributes)) return[[]];
+        $repetition = $this->combineAttribute($attributes, $index + 1);
+        $formattedAttributePayload = [];
+        foreach ($attributes[$index] as $key => $value) {
+            foreach ($repetition as $keyy => $valuee) {
+                $formattedAttributePayload[] = array_merge([$value], $valuee);
+            }
+        }
+        return $formattedAttributePayload;
     }
 
     private function formatVariantPayload($payload = []):array
@@ -156,7 +206,7 @@ class ProductService extends BaseService implements ProductServiceInterface
     public function create(StoreProductRequest $request, $language_id)
     {
         DB::beginTransaction();
-        // try {
+        try {
             $product = $this->productRepository->create($this->formatProductPayload($request));
             if ($product->id > 0) {
                 $this->productRepository->createPivot($product, $this->formatProductLanguagePayload($request, $product->id, $language_id), 'languages');
@@ -169,22 +219,22 @@ class ProductService extends BaseService implements ProductServiceInterface
                         $language_id,
                     )
                 );
-                $this->createVariant($request, $product);
+                $this->createVariant($request, $product, $language_id);
             }
             DB::commit();
-            die();
-            // return true;
-        // } catch (Exception $e) {
-            // DB::rollBack();
-            // echo $e->getMessage();
-            // return false;
-        // }
+            // die();
+            return true;
+        } catch (Exception $e) {
+            DB::rollBack();
+            echo $e->getMessage();
+            return false;
+        }
     }
 
     public function update(int $id, UpdateProductRequest $request, $language_id)
     {
         DB::beginTransaction();
-        try {
+        // try {
             $product = $this->productRepository->findById($id);
             $result = $this->productRepository->update($id, $this->formatProductPayload($request));
             if ($result == true) {
@@ -206,15 +256,22 @@ class ProductService extends BaseService implements ProductServiceInterface
                         $language_id,
                     )
                 );
+                //xoa phiên bản trước khi cập nhật
+                $product->product_variants()->each(function($variant) {
+                    $variant->languages()->detach();
+                    $variant->attributes()->detach();
+                    $variant->delete();
+                });
+                $this->createVariant($request, $product, $language_id);
 
             }
             DB::commit();
             return true;
-        } catch (Exception $e) {
-            DB::rollBack();
-            echo $e->getMessage();
-            return false;
-        }
+        // } catch (Exception $e) {
+        //     DB::rollBack();
+        //     echo $e->getMessage();
+        //     return false;
+        // }
     }
 
     public function destroy(int $id)
